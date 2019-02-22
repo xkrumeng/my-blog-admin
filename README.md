@@ -36,13 +36,13 @@ yarn add antd
 # husky
 # lint-staged
 # prettier
-# eslint-config-airbnb eslint-config-prettier eslint-plugin-prettier
+# eslint-config-alloy eslint-config-prettier eslint-plugin-prettier
 # babel-import-plugin  # babel插件
 # customize-cra # 配合react-app-rewired使用
 # react-app-rewired # 重写create-react-app里的构建配置
 # less less-loader    # less预编译加载器
 
-yarn add --dev husky lint-staged prettier eslint-config-airbnb eslint-config-prettier eslint-plugin-prettier babel-import-plugin  react-app-rewired less less-loader
+yarn add --dev husky lint-staged prettier eslint-config-alloy eslint-config-prettier eslint-plugin-prettier babel-import-plugin  react-app-rewired less less-loader
 
 yarn add customize-cra  # 因为在config-overrides.js里要require
 ```
@@ -79,13 +79,13 @@ module.exports = {
       jsx: true,
     },
   },
-  extends: ['airbnb', 'prettier'],
+  extends: ['alloy', 'prettier'],
   plugins: ['prettier'],
   rules: {
     'react/jsx-filename-extension': [
       1,
       {
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx'],  // jsx的后缀可以是.js或.jsx
       },
     ],
     'prettier/prettier': 'error',
@@ -128,5 +128,15 @@ module.exports = override(
   }),
   addLessLoader({ javascriptEnabled: true })
 )
+
+```
+
+### 8. 安装react-router, redux依赖
+
+```bash
+# react-router-dom 包含了react-router核心 + dom方面的东西， 如Link
+# redux-thunk是异步请求时用到一个中间件
+
+yarn add react-router-dom redux react-redux redux-thunk
 
 ```
