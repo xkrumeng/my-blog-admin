@@ -140,3 +140,9 @@ module.exports = override(
 yarn add react-router-dom redux react-redux redux-thunk
 
 ```
+
+### 9. 安装redux开发工具
+
+```
+yarn add redux-devtools redux-devtools-log-monitor redux-devtools-dock-monitor redux-slider-monitor
+```
