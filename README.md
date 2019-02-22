@@ -1,68 +1,114 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# react+antd+redux
 
-## Available Scripts
+本项目是为了学习下使用[Create React App](https://github.com/facebook/create-react-app) + antd + redux来构建一个项目。
 
-In the project directory, you can run:
+主要是需要学会掌握以下几个知识：
 
-### `npm start`
+- 使用prettier + eslint 进行代码规范
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- 学会使用Redux-devtools进行开发调试
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+- redux 的使用
 
-### `npm test`
+- 项目目录结构
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 项目搭建过程
 
-### `npm run build`
+### 1. 使用create-react-app初始化项目
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+# 初始化项目
+# my-blog-admin 项目名
+create-react-app my-blog-admin
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+# 命令的其它一些使用，请使用 --help查看
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 2. 安装antd插件
 
-### `npm run eject`
+```bash
+yarn add antd
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### 3. 安装 prettier, eslint规范插件，babel-import插件等
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+# husky
+# lint-staged
+# prettier
+# eslint-config-airbnb eslint-config-prettier eslint-plugin-prettier
+# babel-import-plugin  # babel插件
+# customize-cra # 配合react-app-rewired使用
+# react-app-rewired # 重写create-react-app里的构建配置
+# less less-loader    # less预编译加载器
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+yarn add --dev husky lint-staged prettier eslint-config-airbnb eslint-config-prettier eslint-plugin-prettier babel-import-plugin customize-cra react-app-rewired less less-loader
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 4. 配置prettier
 
-## Learn More
+在根目录下新建 **.prettierrc** 文件， 并且写入内容：
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```json
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 5. 配置eslint
 
-### Code Splitting
+在根目录下新建 **.eslintrc.js** 文件， 并写入内容:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+```js
+module.exports = {
+  extends: [
+    'airbnb',
+    'prettier'
+  ],
+  plugins: ["prettier"],
+  rules: {  // 更多其它的规范在此配置
+    'prettier/prettier': 'error'
+  }
+}
+```
 
-### Analyzing the Bundle Size
+### 6. 配置pre-commit hooks
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+在 **Package.json** 里加上:
 
-### Making a Progressive Web App
+```json
+"husky": {
+  "hooks": {
+    "pre-commit": "lint-staged"
+  }
+},
+"lint-staged": {
+  "*.{js, json, css, md}": [
+    "prettier --write",
+    "git add"
+  ]
+},
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+### 7. 引入antd
 
-### Advanced Configuration
+在根目录下创建文件 **config-overrides.js** :
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+```js
+// config-overrides.js
 
-### Deployment
+const { override, fixBabelImports, addLessLoader } = require('customize-cra')
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+module.exports = override(
+  fixBabelImports('import', {
+    libraryName: 'antd',
+    libraryDirectory: 'es',
+    style: true,
+  }),
+  addLessLoader({ javascriptEnabled: true })
+)
 
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```
