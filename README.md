@@ -42,7 +42,9 @@ yarn add antd
 # react-app-rewired # 重写create-react-app里的构建配置
 # less less-loader    # less预编译加载器
 
-yarn add --dev husky lint-staged prettier eslint-config-airbnb eslint-config-prettier eslint-plugin-prettier babel-import-plugin customize-cra react-app-rewired less less-loader
+yarn add --dev husky lint-staged prettier eslint-config-airbnb eslint-config-prettier eslint-plugin-prettier babel-import-plugin  react-app-rewired less less-loader
+
+yarn add customize-cra  # 因为在config-overrides.js里要require
 ```
 
 ### 4. 配置prettier
@@ -54,7 +56,8 @@ yarn add --dev husky lint-staged prettier eslint-config-airbnb eslint-config-pre
   "trailingComma": "es5",
   "tabWidth": 2,
   "semi": false,
-  "singleQuote": true
+  "singleQuote": true,
+  "endOfLine": "lf"
 }
 ```
 
@@ -64,14 +67,29 @@ yarn add --dev husky lint-staged prettier eslint-config-airbnb eslint-config-pre
 
 ```js
 module.exports = {
-  extends: [
-    'airbnb',
-    'prettier'
-  ],
-  plugins: ["prettier"],
-  rules: {  // 更多其它的规范在此配置
-    'prettier/prettier': 'error'
-  }
+  env: {
+    browser: true,
+    es6: true,
+    jest: true,
+  },
+  parserOptions: {
+    ecmaVersion: 6,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
+  extends: ['airbnb', 'prettier'],
+  plugins: ['prettier'],
+  rules: {
+    'react/jsx-filename-extension': [
+      1,
+      {
+        extensions: ['.js', '.jsx'],
+      },
+    ],
+    'prettier/prettier': 'error',
+  },
 }
 ```
 
